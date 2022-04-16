@@ -1,0 +1,88 @@
+﻿Website para um hotel
+
+Utilizadores
+------------
+Clientes, Funcionários, Administradores
+
+Funcionalidades
+-----------------
+Público
+	Consultar quartos livres,
+
+Clientes
+	Criar conta, fazer reserva, cancelar reserva (António), 
+	consultar historico,
+
+Funcionários
+	Check In, Check Out, Criar clientes, Gerir clientes, Lista de estadias, pesquisar quartos
+
+Administrador
+	Criar e gerir quartos, criar e gerir funcionários, 
+	criar e gerir clientes, criar e gerir estadias,
+	estatisticas
+
+Modelo de dados
+----------------
+	Quartos(ID <PK>, Lotação, Preco_Dia, WC, TV, Cozinha, Fotografia, Piso, AC, Varanda)
+	Utilizadores(id<PK>,perfil[C,F,A],estado,nome,cc,morada,cp,nif,data_nascimento,email,password,nr_telefone)
+	Estadias(id<PK>,id_quarto<FK>,id_utilizador<FK>,data_entrada,data_saida,Fase[RF,RC,E,T],Custo,Avaliacao,Comentario)
+
+	/*Quartos(ID <PK>, Lotação, Preco_Dia, WC, TV, Cozinha, 
+		Fotografia, Piso, AC, Varanda)*/
+CREATE TABLE Quartos(
+	ID int identity primary key,
+	Piso int not null check (Piso>=0),
+	Lotacao int not null check (lotacao>1 and lotacao<=5),
+	Preco_Dia money not null check (preco_Dia>0),
+	WC bit,
+	TV bit,
+	Cozinha bit,
+	AC bit,
+	Varanda bit,
+	Fotografia varbinary(max),
+	Estado int default (1) not null check (estado in (0,1))  //1 - livre 0-ocupado
+)
+
+/*Utilizadores(id<PK>,perfil[C,F,A],estado,nome,cc,morada,cp,nif
+	,data_nascimento,email,password,nr_telefone)*/
+CREATE TABLE Utilizadores(
+	ID int identity primary key,
+	Nome varchar(50) not null check (len(nome)>=3),
+	Morada varchar(100) not null,
+	CP varchar(8) check (CP like '%-%'),
+	CC varchar(12) not null,
+	NIF varchar(9) not null,
+	Data_Nascimento Date 
+		check (datediff(year,data_nascimento,getdate())>=18),
+	Nr_Telefone varchar(13),
+	Email varchar(150) check (email like '%@%.%'),
+	Password varchar(64),
+	Perfil varchar(1) default ('C') not null check (perfil in ('C','F','A')),
+	Estado int default (1) check (estado in (0,1)) //1-ativo 0-bloqueado
+)
+CREATE TABLE Estadias(
+	ID int identity primary key,
+	id_quarto int not null,
+	id_utilizador int not null,
+	data_entrada date not null check (data_entrada>=getdate()),
+	data_saida date,
+	fase varchar(2) check (fase in ('RF','RC','E','T')),
+	custo money check (custo>=0),
+	avaliacao int check (avaliacao in (1,2,3,4,5)),
+	comentario varchar(250),
+	constraint regra_data_saida check (data_saida>=data_entrada),
+	foreign key (id_quarto) references Quartos(ID)
+		ON DELETE Cascade,
+	foreign key (id_utilizador) references Utilizadores(id)
+)
+
+INSERT INTO Utilizadores(Nome,Morada,CC,NIF,email,password,perfil)
+VALUES ('Admin','Admin','123456789','123456789',
+'admin@gmail.com',HASHBYTES('SHA2_512','12345'),'A')
+
+select * from utilizadores
+
+
+//////////////////////////////////////////////////////////////////////
+
+Consultas/estatisticas

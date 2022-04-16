@@ -1,0 +1,106 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="UFCD_9952_TrabalhoModelo_2021_22.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="\index.aspx">HOTEL 5*</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <!--Se não tem sessão iniciada-->
+                            <% if (Session["perfil"] == null)
+                                { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="\registo.aspx">Registar</a>
+                                    </li>
+                            <% }else
+                                { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="\logout.aspx">Terminar sessão</a>
+                                    </li>
+                            <% } %>
+                            <% if (Session["perfil"] != null && Session["perfil"].Equals("A"))
+                                { %>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quartos</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="\admin\quartos\adicionar.aspx">Adicionar</a></li>
+                                    <li><a class="dropdown-item" href="\admin\quartos\gerir.aspx">Gerir</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="\admin\quartos\procurar.aspx">Procurar</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownU" role="button" data-bs-toggle="dropdown" aria-expanded="false">Utilizadores</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="\admin\utilizadores\adicionar.aspx">Adicionar</a></li>
+                                    <li><a class="dropdown-item" href="\admin\utilizadores\gerir.aspx">Gerir</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownE" role="button" data-bs-toggle="dropdown" aria-expanded="false">Estadias</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="\func\estadias\entrada.aspx">CheckIn</a></li>
+                                    <li><a class="dropdown-item" href="\func\estadias\estadias.aspx">Gerir</a></li>
+                                    <li><a class="dropdown-item" href="\func\estadias\reservas.aspx">Reservas</a></li>
+                                </ul>
+                            </li>
+                            <% } %>
+                            <% if (Session["perfil"] != null && Session["perfil"].Equals("F"))
+                                { %>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quartos</a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><a class="dropdown-item" href="\admin\quartos\procurar.aspx">Procurar</a></li>
+                                        </ul>
+                                    </li>
+                                     <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownE" role="button" data-bs-toggle="dropdown" aria-expanded="false">Estadias</a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><a class="dropdown-item" href="\func\estadias\entrada.aspx">CheckIn</a></li>
+                                            <li><a class="dropdown-item" href="\func\estadias\estadias.aspx">Gerir</a></li>
+                                            <li><a class="dropdown-item" href="\func\estadias\reservas.aspx">Reservas</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="\registo.aspx">Criar cliente novo</a>
+                                    </li>
+                            <% } %>
+                            <% if (Session["perfil"] != null && Session["perfil"].Equals("C"))
+                                { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="\cliente\reserva.aspx">Fazer Reserva</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="\cliente\historico.aspx">Histórico</a>
+                                    </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!--Navbar-->
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+            <!--Aviso cookies-->
+        </div>
+    </form>
+</body>
+</html>
