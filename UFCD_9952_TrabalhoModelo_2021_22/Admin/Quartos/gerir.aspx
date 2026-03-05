@@ -5,7 +5,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:GridView OnRowDataBound="GridView1_RowDataBound" ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="ID" DataSourceID="SqlQuartos" AllowPaging="True" AllowSorting="True">
         <Columns>
-            <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"></asp:CommandField>
+            <asp:TemplateField ShowHeader="False">
+                <EditItemTemplate>
+                    <asp:LinkButton runat="server" Text="Update" CommandName="Update" CausesValidation="True" ID="LinkButton1"></asp:LinkButton>&nbsp;<asp:LinkButton runat="server" Text="Cancel" CommandName="Cancel" CausesValidation="False" ID="LinkButton2"></asp:LinkButton>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:LinkButton runat="server" Text="Edit" CommandName="Edit" CausesValidation="False" ID="LinkButton1"></asp:LinkButton>&nbsp;
+                    <asp:LinkButton OnClientClick="return confirm('Tem a certeza que pretende remover?');" runat="server" Text="Delete" CommandName="Delete" CausesValidation="False" ID="LinkButton2"></asp:LinkButton>
+                </ItemTemplate>
+            </asp:TemplateField>
+
             <asp:BoundField DataField="ID" HeaderText="ID" ReadOnly="True" InsertVisible="False" SortExpression="ID"></asp:BoundField>
             <asp:TemplateField HeaderText="Piso" SortExpression="Piso">
                 <EditItemTemplate>
